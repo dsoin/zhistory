@@ -21,7 +21,6 @@ listings = api.property_listings(
         max_results=None,
         listing_status='sale')
 
-bulk_data=[]
 for listing in listings:
     es_entry=entry_utils.fill_esentry_zoopla(listing)
     entry_utils.update_esentry_geo(es_entry)

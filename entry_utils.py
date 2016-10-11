@@ -15,7 +15,8 @@ def get_addr(lat,long):
         for subentry in entry["address_components"]:
             type_entry = json.dumps(subentry["types"])
             long_name = json.dumps(subentry["long_name"])
-            if "postal_code" in type_entry:
+            #print(subentry)
+            if "postal_code" in type_entry and "postal_code_prefix" not in type_entry:
                 address['postcode']= long_name
             if "route" in type_entry:
                 address['street']=long_name
@@ -56,6 +57,12 @@ def update_esentry_geo(es_entry):
     es_entry['town']=addr['town'].replace("\"","")
     es_entry['county']=addr['county'].replace("\"","")
     es_entry['borough']=addr['borough'].replace("\"","")
+    es_entry['address'] = "{} {} {} {} {} {}".format(es_entry['number'],
+                                                  es_entry["street"],
+                                                  es_entry["town"],
+                                                  es_entry["postcode"],
+                                                  es_entry["borough"],
+                                                  es_entry["county"])
 
 def update_appeareance(es_entry):
     es_entry['added']='false';

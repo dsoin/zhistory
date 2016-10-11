@@ -3,12 +3,12 @@
   "mappings": {
     "z_data" : {
       "properties" : {
-        "number" : {"type": "string", "index":"not_analyzed", "copy_to":"address"},
-        "street" : {"type": "string", "index":"not_analyzed", "copy_to":"address"},
-        "postcode": {"type": "string", "index":"not_analyzed", "copy_to":"address"},
-        "town": {"type": "string", "index":"not_analyzed", "copy_to":"address"},
-        "borough":{"type": "string", "index":"not_analyzed", "copy_to":"address"},
-        "county":{"type": "string", "index":"not_analyzed", "copy_to":"address"},
+        "number" : {"type": "string", "index":"not_analyzed"},
+        "street" : {"type": "string", "index":"not_analyzed"},
+        "postcode": {"type": "string", "index":"not_analyzed"},
+        "town": {"type": "string", "index":"not_analyzed"},
+        "borough":{"type": "string", "index":"not_analyzed"},
+        "county":{"type": "string", "index":"not_analyzed"},
         "address":{"type": "string"},
          "geo_loc": {
           "type": "geo_point",
