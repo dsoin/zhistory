@@ -93,6 +93,15 @@ def update_appeareance(last_set, current_set):
             entry['status'] = "initial"
 
 
+def remove_duplicates(d_set):
+    res = list()
+    for i in range (0,len(d_set)-1):
+        if d_set[i]['similarity_hash'] not in d_set[i+1]['similarity_hash']:
+            res.append(d_set[i])
+        else:
+            print("{} dup of {}".format(d_set[i]['address'],d_set[i+1]['address']))
+    return res
+
 def print_totals(p_set):
     total = 0
     added = 0
