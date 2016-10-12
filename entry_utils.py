@@ -5,6 +5,7 @@ import hashlib
 from datetime import datetime
 
 run_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
 def get_addr(lat,long):
     url = "http://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&sensor=false".format(lat,long);
     response = requests.get(url)
@@ -66,12 +67,29 @@ def update_esentry_geo(es_entry):
 
 def update_appeareance(last_set, current_set):
     for current_entry in current_set:
-        if not any(last_entry['similarity_hash'] == current_entry['similarity_hash']
-                   for last_entry in last_set):
+        if not any(last_test_entry['similarity_hash'] == current_entry['similarity_hash']
+                   for last_test_entry in last_set):
             current_entry['status'] = "added"
+            print("{}:added".format(current_entry['address']))
         else:
             current_entry['status'] = "retained"
 
     for last_entry in last_set:
-        if not any(current_entry['similarity_hash'] == last_entry['similarity_hash'] for current_entry in current_set):
-            current_entry['status'] = "removed"
+        if not any(current_test_entry['similarity_hash'] == last_entry['similarity_hash']
+                   for current_test_entry in current_set):
+            last_entry['status'] = "removed"
+            current_set.append(last_entry)
+            print len(current_set)
+            print("{}:removed".format(last_entry['address']))
+
+def print_totals(p_set):
+    total=0;added=0;removed=0;reappeared=0;retained=0;
+    for entry in p_set:
+        total+=1;
+        if "added" in entry['status']: added+=1
+        if "removed" in entry['status']: removed += 1
+        if "retained" in entry['status']: retained += 1
+        if "reappeared" in entry['status']: reappeared += 1
+
+    print("Total     :{}\r\nRetained  :{}\r\nAdded     :{}\r\nRemoved   :{}\r\nReappeared:{}".
+          format(total,retained,added,removed,reappeared))
