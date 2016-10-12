@@ -5,7 +5,7 @@ import entry_utils
 import zoopla
 
 index = "zoopla"
-postcode = "KT8"
+postcode = "KT7"
 
 es = elasticsearch.Elasticsearch(hosts=['localhost'])
 

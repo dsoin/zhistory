@@ -2,9 +2,11 @@ import requests
 from cStringIO import StringIO
 import json
 import hashlib
+import time
 from datetime import datetime
 
-run_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#run_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+run_time=timestamp = int(time.time()*1000)
 
 def get_addr(lat,long):
     url = "http://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&sensor=false".format(lat,long);

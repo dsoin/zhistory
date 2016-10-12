@@ -25,7 +25,7 @@
         "first_published_date":{"type":"date","format": "yyyy-MM-dd HH:mm:ss"},
         "last_published_date":{"type":"date","format": "yyyy-MM-dd HH:mm:ss"},
 
-        "fetched_time":{"type":"date","format": "yyyy-MM-dd HH:mm:ss", "store":"true"},
+        "fetched_time":{"type":"date"},
         "status":{"type": "string", "index":"not_analyzed"},
         "similarity_hash":{"type": "string", "index":"not_analyzed"}
 
