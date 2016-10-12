@@ -1,6 +1,8 @@
+import sys
+
 import elasticsearch
 from elasticsearch import helpers
-import sys
+
 import entry_utils
 import zoopla
 
@@ -24,10 +26,10 @@ def get_last_set(post_code):
         {"must": [
             {"term": {"fetched_time": first_date}},
             {"match": {"fetch_query": post_code}}],
-        "must_not":
-             {"term":{"status":"removed"}}
-         }
-        }})
+            "must_not":
+                {"term": {"status": "removed"}}
+        }
+    }})
     for hit in res['hits']['hits']:
         ret.append(hit['_source'])
     return ret
@@ -37,9 +39,9 @@ def check_reappeared(r_set):
     for entry in r_set:
         if "added" in entry['status']:
             res = es.search(index=index, body={"query": {"term": {"similarity_hash": entry['similarity_hash']}}})
-            print("Checking reappearance for {}:{}".format(entry['address'],res['hits']['total']))
-            if res['hits']['total']>0:
-                entry['status']="reappeared"
+            print("Checking reappearance for {}:{}".format(entry['address'], res['hits']['total']))
+            if res['hits']['total'] > 0:
+                entry['status'] = "reappeared"
 
 
 def get_current(post_code):
@@ -78,7 +80,7 @@ last_set = get_last_set(postcode)
 print("Getting current results from Zoopla")
 current_set = get_current(postcode)
 print("Processing {} results".format(len(current_set)))
-#current_set.remove(current_set[0])
+# current_set.remove(current_set[0])
 print("Getting geo data from Google")
 entry_utils.update_appeareance(last_set, current_set)
 check_reappeared(current_set)
