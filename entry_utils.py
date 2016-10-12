@@ -72,7 +72,7 @@ def update_appeareance(last_set, current_set):
         if not any(last_test_entry['similarity_hash'] == current_entry['similarity_hash']
                    for last_test_entry in last_set):
             current_entry['status'] = "added"
-            print("{}:added".format(current_entry['address']))
+            #print("{}:added".format(current_entry['address']))
         else:
             current_entry['status'] = "retained"
 
@@ -80,8 +80,8 @@ def update_appeareance(last_set, current_set):
         if not any(current_test_entry['similarity_hash'] == last_entry['similarity_hash']
                    for current_test_entry in current_set):
             last_entry['status'] = "removed"
+            last_entry['fetched_time']=run_time
             current_set.append(last_entry)
-            print len(current_set)
             print("{}:removed".format(last_entry['address']))
 
 def print_totals(p_set):

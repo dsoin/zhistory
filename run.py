@@ -1,11 +1,11 @@
 import elasticsearch
 from elasticsearch import helpers
-
+import sys
 import entry_utils
 import zoopla
 
 index = "zoopla"
-postcode = "KT7"
+postcode = "KT6"
 
 es = elasticsearch.Elasticsearch(hosts=['localhost'])
 
@@ -70,12 +70,16 @@ def index_set(i_set):
 
 # if es.indices.exists(index="zoopla"):
 #    es.indices.delete(index="zoopla")
-
-
+if len(sys.argv) > 1:
+    postcode = sys.argv[1]
+print("Running for: {}".format(postcode))
+print("Getting previous results from ES")
 last_set = get_last_set(postcode)
-print(len(last_set))
+print("Getting current results from Zoopla")
 current_set = get_current(postcode)
+print("Processing {} results".format(len(current_set)))
 #current_set.remove(current_set[0])
+print("Getting geo data from Google")
 entry_utils.update_appeareance(last_set, current_set)
 check_reappeared(current_set)
 index_set(current_set)
