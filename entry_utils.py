@@ -64,8 +64,14 @@ def update_esentry_geo(es_entry):
                                                   es_entry["borough"],
                                                   es_entry["county"])
 
-def update_appeareance(es_entry):
-    es_entry['added']='false';
-    es_entry['removed']='false';
-    es_entry['retained']='false';
-    es_entry['reappeared']='false';
+def update_appeareance(last_set, current_set):
+    for current_entry in current_set:
+        if not any(last_entry['similarity_hash'] == current_entry['similarity_hash']
+                   for last_entry in last_set):
+            current_entry['status'] = "added"
+        else:
+            current_entry['status'] = "retained"
+
+    for last_entry in last_set:
+        if not any(current_entry['similarity_hash'] == last_entry['similarity_hash'] for current_entry in current_set):
+            current_entry['status'] = "removed"

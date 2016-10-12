@@ -3,6 +3,7 @@
   "mappings": {
     "z_data" : {
       "properties" : {
+        "fetch_query" : {"type": "string"},
         "number" : {"type": "string", "index":"not_analyzed"},
         "street" : {"type": "string", "index":"not_analyzed"},
         "postcode": {"type": "string", "index":"not_analyzed"},
@@ -25,10 +26,7 @@
         "last_published_date":{"type":"date","format": "yyyy-MM-dd HH:mm:ss"},
 
         "fetched_time":{"type":"date","format": "yyyy-MM-dd HH:mm:ss", "store":"true"},
-        "retained":{"type":"boolean"},
-        "added":{"type":"boolean"},
-        "reappeared":{"type":"boolean"},
-        "removed":{"type":"boolean"},
+        "status":{"type": "string", "index":"not_analyzed"},
         "similarity_hash":{"type": "string", "index":"not_analyzed"}
 
       }
