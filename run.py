@@ -9,7 +9,7 @@ import zoopla
 index = "zoopla"
 postcode = "KT6"
 
-es = elasticsearch.Elasticsearch(hosts=['localhost'])
+es = elasticsearch.Elasticsearch(hosts=['192.168.0.23'])
 
 
 def get_last_set(post_code):
@@ -45,7 +45,7 @@ def check_reappeared(r_set):
 
 
 def get_current(post_code):
-    api = zoopla.api(version=1, api_key='h8w8e3vza6wprx4qeeyvhdd3')
+    api = zoopla.api(version=1, api_key='h8w8e3vza6wprx4qeeyvhdd3', cache_seconds=0)
     ret = list()
     listings = api.property_listings(
         area=post_code,
@@ -79,7 +79,7 @@ print("Getting previous results from ES")
 last_set = get_last_set(postcode)
 print("Getting current results from Zoopla")
 current_set = get_current(postcode)
-current_set = entry_utils.remove_duplicates(current_set)
+#current_set = entry_utils.remove_duplicates(current_set)
 print("Processing {} results".format(len(current_set)))
 # current_set.remove(current_set[0])
 print("Getting geo data from Google")

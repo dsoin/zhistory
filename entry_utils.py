@@ -77,7 +77,7 @@ def update_appeareance(last_set, current_set):
             if not any(last_test_entry['similarity_hash'] == current_entry['similarity_hash']
                        for last_test_entry in last_set):
                 current_entry['status'] = "added"
-                # print("{}:added".format(current_entry['address']))
+                print("{}:{}:{}added".format(current_entry['address'],current_entry['bed'],current_entry['asking_price']))
             else:
                 current_entry['status'] = "retained"
 
@@ -87,7 +87,7 @@ def update_appeareance(last_set, current_set):
                 last_entry['status'] = "removed"
                 last_entry['fetched_time'] = run_time
                 current_set.append(last_entry)
-                print("{}:removed".format(last_entry['address']))
+                print("{}:{}:{}removed".format(current_entry['address'],current_entry['bed'],current_entry['asking_price']))
     else:
         for entry in current_set:
             entry['status'] = "initial"
