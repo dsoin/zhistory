@@ -60,6 +60,8 @@ def get_current(post_code):
 
     # es.create(index=index, doc_type='z_data', body=es_entry)
 
+def get_cached_addr(geo_loc):
+    res = es.search(index=zoopla,body={})
 
 def index_set(i_set):
     actions = list()

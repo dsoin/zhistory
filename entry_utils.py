@@ -2,6 +2,7 @@ import hashlib
 import json
 import time
 from cStringIO import StringIO
+from google_lookup import get_saved_geo, copy_geo_data
 
 import requests
 
@@ -21,17 +22,17 @@ def get_addr(lat, long):
             long_name = json.dumps(subentry["long_name"])
             # print(subentry)
             if "postal_code" in type_entry and "postal_code_prefix" not in type_entry:
-                address['postcode'] = long_name
+                address['postcode'] = long_name.replace("\"", "")
             if "route" in type_entry:
-                address['street'] = long_name
+                address['street'] = long_name.replace("\"", "")
             if "street_number" in type_entry:
-                address['number'] = long_name
+                address['number'] = long_name.replace("\"", "")
             if "postal_town" in type_entry:
-                address['town'] = long_name
+                address['town'] = long_name.replace("\"", "")
             if "administrative_area_level_2" in type_entry:
-                address['county'] = long_name
+                address['county'] = long_name.replace("\"", "")
             if "administrative_area_level_3" in type_entry:
-                address['borough'] = long_name
+                address['borough'] = long_name.replace("\"", "")
     return address
 
 
@@ -56,19 +57,12 @@ def fill_esentry_zoopla(listing):
 
 
 def update_esentry_geo(es_entry):
-    addr = get_addr(es_entry['geo_loc']['lat'], es_entry['geo_loc']['lon'])
-    es_entry['postcode'] = addr['postcode'].replace("\"", "")
-    es_entry['number'] = addr['number'].replace("\"", "")
-    es_entry['street'] = addr['street'].replace("\"", "")
-    es_entry['town'] = addr['town'].replace("\"", "")
-    es_entry['county'] = addr['county'].replace("\"", "")
-    es_entry['borough'] = addr['borough'].replace("\"", "")
-    es_entry['address'] = "{} {} {} {} {} {}".format(es_entry['number'],
-                                                     es_entry["street"],
-                                                     es_entry["town"],
-                                                     es_entry["postcode"],
-                                                     es_entry["borough"],
-                                                     es_entry["county"])
+    hit = get_saved_geo(es_entry['geo_loc']['lat'], es_entry['geo_loc']['lon'])
+    if hit:
+        addr = hit[0]['_source']
+    else:
+        addr = get_addr(es_entry['geo_loc']['lat'], es_entry['geo_loc']['lon'])
+    copy_geo_data(addr,es_entry)
 
 
 def update_appeareance(last_set, current_set):
@@ -117,3 +111,4 @@ def print_totals(p_set):
 
     print("Total     :{}\r\nRetained  :{}\r\nAdded     :{}\r\nRemoved   :{}\r\nReappeared:{}".
           format(total, retained, added, removed, reappeared))
+
