@@ -1,7 +1,7 @@
 import elasticsearch
 from elasticsearch import helpers
 
-es = elasticsearch.Elasticsearch(hosts=['192.168.0.23'])
+es = elasticsearch.Elasticsearch(hosts=['localhost'])
 
 def get_saved_geo(lat, lon):
     geo_exist = es.search(index="zoopla", body={"query": {

@@ -15,13 +15,16 @@ def query_registry(postcode, street, number):
     if res.status_code == 200:
         ret = StringIO(res.content)
         parsed = json.loads(ret.read())
-        return json.loads(parsed['result'])['results']['bindings']
-    return None
+        ret = json.loads(parsed['result'])['results']['bindings']
+    data = list()
+    for entry in ret:
+        ret={'date':'','amount':''}
+        ret['date'] = entry['date']['value']
+        ret['amount'] = entry['amount']['value']
+        data.append(ret)
+    return data
 
 
 requests_cache.install_cache(
         expire_after=60*60,
         allowable_methods=('POST',))
-data = query_registry('KT7 0NU','STATION ROAD','15')
-for entry in data:
-    print "{}:{}".format(entry['date']['value'],entry['amount']['value'])
