@@ -5,6 +5,7 @@ from elasticsearch import helpers
 
 import entry_utils
 import zoopla
+import zoopla
 
 index = "zoopla"
 postcode = "KT6"
